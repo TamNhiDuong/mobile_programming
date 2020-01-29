@@ -17,27 +17,22 @@
     <script type="text/babel">
 
     const Listing = () => {
-    const [firstname,setFirstname] = React.useState(''); 
-    const [lastname,setLastname] = React.useState(''); 
+    const [form,setForm] = React.useState({firstname: '', lastname: ''}); 
 
     const inputChange = event => {
-        setFirstname(event.target.value);
-    }
-
-    const inputChange2 = event => {
-        setLastname(event.target.value);
+        setForm({...form,[event.target.name]: event.target.value});
     }
 
     const output = (event) => {
         event.preventDefault();
-        alert('hello ' + firstname + ' ' + lastname);
+        alert('hello ' + form.firstname + ' ' + form.lastname);
     }
 
     return (
         <div>
         <form onSubmit={output}>
-            <input type = "text" value={firstname} onChange={inputChange}/>
-            <input type = "text" value={lastname} onChange={inputChange2}/>
+            <input type = "text" name='firstname' value={form.firstname} onChange={inputChange}/>
+            <input type = "text" name='lastname' value={form.lastname} onChange={inputChange}/>
             <input type="submit" value="Send" />
         </form>
         </div>
