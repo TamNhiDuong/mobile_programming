@@ -1,0 +1,52 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Practice Hooks-Listing</title>
+</head>
+
+<body>
+    <!-- Root container for react components -->
+    <div id='root'></div>
+
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
+
+    <script type="text/babel">
+
+    const Listing = () => {
+    const [firstname,setFirstname] = React.useState(''); 
+    const [lastname,setLastname] = React.useState(''); 
+
+    const inputChange = event => {
+        setFirstname(event.target.value);
+    }
+
+    const inputChange2 = event => {
+        setLastname(event.target.value);
+    }
+
+    const output = (event) => {
+        event.preventDefault();
+        alert('hello ' + firstname + ' ' + lastname);
+    }
+
+    return (
+        <div>
+        <form onSubmit={output}>
+            <input type = "text" value={firstname} onChange={inputChange}/>
+            <input type = "text" value={lastname} onChange={inputChange2}/>
+            <input type="submit" value="Send" />
+        </form>
+        </div>
+
+    )
+
+}
+ReactDOM.render(<Listing />, document.getElementById('root'));
+    </script>
+</body>
+
+</html>
