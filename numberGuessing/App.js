@@ -9,11 +9,11 @@ export default function App() {
   const randomNumber = Math.floor(Math.random() * 100) + 1;
 
   const guess= () => {
-    if(input > randomNumber) {
+    if(Number(input) > randomNumber) {
       setResult(`Your guess ${input} is too high`);
       setCounter(counter + 1);
     }
-    else if (input < randomNumber) {
+    else if (Number(input) < randomNumber) {
       setResult(`Your guess ${input} is too low`);
       setCounter(counter + 1);
     }
@@ -26,7 +26,7 @@ export default function App() {
   return (
     <View style={container}>
       <Text style={resultStyle}>{result}</Text>
-      <Text>{randomNumber}</Text>
+   
       <TextInput
         style={inputStyle}
         onChangeText={(input) => setInput(input)}
