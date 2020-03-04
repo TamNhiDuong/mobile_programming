@@ -1,24 +1,27 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { StyleSheet, Text, View, TextInput, Button } from 'react-native';
 
 export default function App() {
   const [input, setInput] = useState('');
   const [result, setResult] = useState('Guess a number between 1-100:');
   const [counter, setCounter] = useState(0);
-
-  const randomNumber = Math.floor(Math.random() * 100) + 1;
+  const [randomNum, setRandomNum] = useState(Math.floor(Math.random() * 100) + 1);
+  
+  useEffect(()=> console.log(randomNum))
 
   const guess= () => {
-    if(Number(input) > randomNumber) {
+    if(Number(input) > randomNum) {
       setResult(`Your guess ${input} is too high`);
       setCounter(counter + 1);
     }
-    else if (Number(input) < randomNumber) {
+    else if (Number(input) < randomNum) {
       setResult(`Your guess ${input} is too low`);
       setCounter(counter + 1);
     }
     else {
-      alert(`You guessed the number in ${counter} guesses!`)
+      alert(`You guessed the number in ${counter + 1} guesses!`);
+      setRandomNum(Math.floor(Math.random() * 100) + 1);
+      setCounter(0);
     }
   }
 
@@ -26,7 +29,6 @@ export default function App() {
   return (
     <View style={container}>
       <Text style={resultStyle}>{result}</Text>
-   
       <TextInput
         style={inputStyle}
         onChangeText={(input) => setInput(input)}

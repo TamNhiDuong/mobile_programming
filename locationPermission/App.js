@@ -3,31 +3,33 @@ import { StyleSheet, Text, View, Alert, TextInput, Button, Dimensions } from 're
 import MapView, { Marker } from 'react-native-maps';
 
 import * as Location from 'expo-location';
-import * as permissions from 'expo-permissions';
+import * as Permissions from 'expo-permissions';
 
 export default function App() {
   const [input, setInput] = useState('');
-  const [region, setRegion] = useState({
-    latitude: 60.200692,
-    longitude: 24.934302,
-    latitudeDelta: 0.0322,
-    longitudeDelta: 0.0221
-  });
+  //const [region, setRegion] = useState({
+  //latitude: 60.200692,
+  //longitude: 24.934302,
+  //latitudeDelta: 0.0322,
+  //longitudeDelta: 0.0221
+  //});
   const [location, setLocation] = useState(null);
 
   useEffect(() => {
-    this.getLocation();
-  }, [])
-  getLocation = async() => {
+    getLocation();
+  }, []);
+  const getLocation = async () => {
     //Check permission
-    let {status} = await PermissionRequest.askAsync(permissions.LOCATION);
+    let { status } = await Permissions.askAsync(Permissions.LOCATION);
     if (status !== 'granted') {
       Alert.alert('No permission to access to location')
     }
-    else {
-      let location = await Location.getCurrentPositionAsync({});
-      setLocation(location);
-    }
+    let location = await Location.getCurrentPositionAsync({});
+    setLocation({
+      location
+    });
+
+    console.log('current location', location)
   };
 
   const APIkey = 'dpJDg178G0XSAC5tK3NSLSexLqsdgn2k';
@@ -38,7 +40,7 @@ export default function App() {
     )
       .then(response => response.json())
       .then(responseJson => {
-        setRegion({
+        setLocation({
           latitude: responseJson.results[0].locations[0].displayLatLng.lat,
           longitude: responseJson.results[0].locations[0].displayLatLng.lng,
           latitudeDelta: 0.0322,
@@ -53,14 +55,7 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <MapView style={{ flex: 1 }} region={region}>
-        <Marker
-          coordinate={{
-            latitude: region.latitude,
-            longitude: region.longitude
-          }}
-          title="Location found!"
-        />
+       <MapView style={{ flex: 1 }} region={location}>
       </MapView>
       <View style={styles.input}>
         <TextInput
@@ -72,7 +67,8 @@ export default function App() {
       <View>
         <Button onPress={showMap} title="SEARCH LOCATION" color="blue" />
       </View>
-      <View style={{marginBottom: "10%"}}/>
+      <Text>{JSON.stringify(location)}</Text>
+      <View style={{ marginBottom: "10%" }} />
     </View>
   );
 }
