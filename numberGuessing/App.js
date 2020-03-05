@@ -10,13 +10,16 @@ export default function App() {
   useEffect(()=> console.log(randomNum))
 
   const guess= () => {
-    if(Number(input) > randomNum) {
+    if(!isNaN(input) && Number(input) > randomNum) {
       setResult(`Your guess ${input} is too high`);
       setCounter(counter + 1);
     }
-    else if (Number(input) < randomNum) {
+    else if (!isNaN(input) && Number(input) < randomNum) {
       setResult(`Your guess ${input} is too low`);
       setCounter(counter + 1);
+    }
+    else if (isNaN(input)) {
+      setResult('Please enter valid number')
     }
     else {
       alert(`You guessed the number in ${counter + 1} guesses!`);
