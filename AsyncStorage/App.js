@@ -27,8 +27,13 @@ export default function App() {
     else {
       alert(`You guessed the number in ${counter + 1} guesses!`);
       saveData();
-      setRandomNum(Math.floor(Math.random() * 100) + 1);
+      resetGame();
     }
+  }
+
+  const resetGame = () => {
+    setRandomNum(Math.floor(Math.random() * 100) + 1);
+    setCounter(0); 
   }
   //save current counter to AsyncStorage when user's guess is correct
   const saveData = async() => {
@@ -41,7 +46,6 @@ export default function App() {
     catch {
       Alert.alert('Error saving data');
     }  
-    setCounter(0); 
   }
 
  //Display highScore saved in AsyncStorage

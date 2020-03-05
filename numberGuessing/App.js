@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { StyleSheet, Text, View, TextInput, Button } from 'react-native';
+import { reset } from 'expo/build/AR';
 
 export default function App() {
   const [input, setInput] = useState('');
@@ -7,7 +8,7 @@ export default function App() {
   const [counter, setCounter] = useState(0);
   const [randomNum, setRandomNum] = useState(Math.floor(Math.random() * 100) + 1);
   
-  useEffect(()=> console.log(randomNum))
+  useEffect(()=> console.log(randomNum), console.log('counter', counter))
 
   const guess= () => {
     if(!isNaN(input) && Number(input) > randomNum) {
@@ -23,10 +24,13 @@ export default function App() {
     }
     else {
       alert(`You guessed the number in ${counter + 1} guesses!`);
+      resetGame();
+    }
+  }
+    const resetGame = () => {
       setRandomNum(Math.floor(Math.random() * 100) + 1);
       setCounter(0);
     }
-  }
 
   const { container, inputStyle, resultStyle } = styles;
   return (
