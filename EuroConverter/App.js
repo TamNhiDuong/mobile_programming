@@ -8,6 +8,7 @@ export default function App() {
   const [selectedRate, setSelectedRate] = useState();
   const [amount, setAmount] = useState();
   const [result, setResult] = useState();
+  const [loading, setLoading] = useState(true);
 
   const fetchRates = () => {
     const url = 'http://data.fixer.io/api/latest?access_key=0256100f4184196d3c9103782ec9b6fd&format=1';
@@ -15,7 +16,7 @@ export default function App() {
       .then(response => response.json())
       .then(responseJson => {
         setData(responseJson.rates);
-        console.log("data", data);
+        setLoading(false)
         //Create array of object
         let newArray = Object.keys(data).map(key => (
           { name: key, rate: data[key] }
@@ -30,7 +31,7 @@ export default function App() {
 
   useEffect(() => {
     fetchRates();
-  }, []);
+  }, [loading]);
 
   const pickerChange = (index) => {
     currencies.map((value, i) => {
@@ -42,21 +43,21 @@ export default function App() {
   }
 
   const calculate = () => {
-    console.log(selectedRate);
     const calResult = (Number(amount) / selectedRate).toFixed(2);
     setResult(calResult);
   }
 
   return (
     <View style={styles.container}>
-      <Picker
-        style={{ marginTop: "25%" }}
-        selectedValue={selectedCurrency}
-        onValueChange={(itemValue, itemIndex) => pickerChange(itemIndex)}>
-        {currencies.map((item) => {
-          return <Picker.Item key={item.name} label={item.name} value={item.name} />
-        })}
-      </Picker>
+      {loading ? <Text>Loading...</Text> :
+        <Picker
+          style={{ marginTop: "25%" }}
+          selectedValue={selectedCurrency}
+          onValueChange={(itemValue, itemIndex) => pickerChange(itemIndex)}>
+          {currencies.map((item) => {
+            return <Picker.Item key={item.name} label={item.name} value={item.name} />
+          })}
+        </Picker>}
       <View style={styles.center}>
         <TextInput
           style={styles.input}
