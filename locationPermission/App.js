@@ -7,29 +7,29 @@ import * as Permissions from 'expo-permissions';
 
 export default function App() {
   const [input, setInput] = useState('');
-  //const [region, setRegion] = useState({
-  //latitude: 60.200692,
-  //longitude: 24.934302,
-  //latitudeDelta: 0.0322,
-  //longitudeDelta: 0.0221
-  //});
+
   const [location, setLocation] = useState(null);
 
   useEffect(() => {
     getLocation();
+    console.log('current location', location)
   }, []);
+
   const getLocation = async () => {
     //Check permission
     let { status } = await Permissions.askAsync(Permissions.LOCATION);
     if (status !== 'granted') {
-      Alert.alert('No permission to access to location')
+      Alert.alert('No permission to access to location');
     }
-    let location = await Location.getCurrentPositionAsync({});
-    setLocation({
-      location
-    });
-
-    console.log('current location', location)
+    else {
+      let location = await Location.getCurrentPositionAsync({});
+      setLocation({
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+        latitudeDelta: 0.0322,
+        longitudeDelta: 0.0221
+      });
+    }
   };
 
   const APIkey = 'dpJDg178G0XSAC5tK3NSLSexLqsdgn2k';
@@ -46,8 +46,8 @@ export default function App() {
           latitudeDelta: 0.0322,
           longitudeDelta: 0.0221
         });
+        console.log(location)
       })
-
       .catch(error => {
         console.error(error);
       });
@@ -55,7 +55,11 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-       <MapView style={{ flex: 1 }} region={location}>
+      <MapView style={{ flex: 1 }} region={location}>
+        <Marker
+          coordinate={location}
+          title="Location found!"
+        />
       </MapView>
       <View style={styles.input}>
         <TextInput
@@ -67,7 +71,6 @@ export default function App() {
       <View>
         <Button onPress={showMap} title="SEARCH LOCATION" color="blue" />
       </View>
-      <Text>{JSON.stringify(location)}</Text>
       <View style={{ marginBottom: "10%" }} />
     </View>
   );
